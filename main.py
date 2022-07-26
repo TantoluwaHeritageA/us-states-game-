@@ -1,47 +1,31 @@
 import turtle
 import pandas
-
+# image
 screen = turtle.Screen()
 screen.title("U.S. States Game")
 image = "blank_states_img.gif"
 screen.addshape(image)
 turtle.shape(image)
-
-#
-# def get_mouse_click_coor(x , y):
-#     print(x , y)
-#
-#
-# turtle.onscreenclick(get_mouse_click_coor)
-# turtle.mainloop() #keeps screen open
-
-
-FONT = ("Courier" , 14 , "normal")
-
+# read file
 data = pandas.read_csv("50_states.csv")
 list_of_state = data.state.to_list()
-# coord = data[data.state == "Ohio"]
-# print(int(coord.x))
-# print(int(coord.y))
-#
-# print(coord)
-# print(coord.to_list())
-# answer = input("guess a state: ").title()
-# print(answer)
+# process
 state_found = True
 guess_count = 0
 total_count = 50
 guessed_state = []
 
 while state_found:
-    answer_state = screen.textinput(title=f"{len(guessed_state)}/50 States correct" ,
+    answer_state = screen.textinput(title=f"{len(guessed_state)}/{total_count} States correct" ,
                                     prompt="What's another state's name? ").title()
     guess_count += 1
+    missing_state = [state for state in list_of_state if state not in  guessed_state]
     if answer_state == "Exit":
-        missing_state = []
-        for state in list_of_state:
-            if state not in guessed_state:
-                missing_state.append(state)
+        missing_state = [state for state in list_of_state if state not in guessed_state]
+        # missing_state = []
+        # for state in list_of_state:
+        #     if state not in guessed_state:
+        #         missing_state.append(state)
         missing_state_data = pandas.DataFrame(missing_state)
         missing_state_data.to_csv("to_learn.csv")
 
